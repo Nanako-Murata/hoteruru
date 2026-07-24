@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.HouseService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -7,22 +8,31 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.House;
+import com.example.demo.form.HouseRegisterForm;
 import com.example.demo.repository.HouseRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin/houses")
 public class HouseController {
+    private final HouseService houseService;
     private final HouseRepository houseRepository;
 
-    public HouseController(HouseRepository houseRepository) {
+    public HouseController(HouseRepository houseRepository, HouseService houseService) {
         this.houseRepository = houseRepository;
+        this.houseService = houseService;
     }
 
     @GetMapping
@@ -51,4 +61,26 @@ public class HouseController {
 
         return "admin/houses/show";
     }
+
+    // 民泊の新規追加フォームの表示
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("houseRegisterForm", new HouseRegisterForm());
+        return "admin/houses/register";
+    }
+
+    // 民泊の登録
+    @PostMapping("/create")
+    public String create(@ModelAttribute @Validated HouseRegisterForm houseRegisterForm,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        // TODO: process POST request
+        if (bindingResult.hasErrors()) {
+            return "admin/houses/register";
+        }
+        houseService.create(houseRegisterForm);
+        redirectAttributes.addFlashAttribute("successMessage", "民泊を予約しました");
+        return "redirect:/admin/houses";
+
+    }
+
 }
