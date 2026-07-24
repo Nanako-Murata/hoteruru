@@ -103,9 +103,8 @@ public class HouseController {
     public String update(@ModelAttribute @Validated HouseEditForm houseEditForm, BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
         // TODO: process POST request
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "admin/houses/edit";
-
         }
         houseService.update(houseEditForm);
         redirectAttributes.addFlashAttribute("successMessage", "民泊情報を編集しました");
@@ -113,4 +112,11 @@ public class HouseController {
         return "redirect:/admin/houses";
     }
 
+    // 民泊を削除する
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        houseRepository.deleteById(id);
+        redirectAttributes.addFlashAttribute("successMessage", "民泊を削除しました");
+        return "redirect:/admin/houses";
+    }
 }
