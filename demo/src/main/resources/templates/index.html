@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -23,14 +24,19 @@
         <main>
             <div class="container pt-4 pb-5 moattravel-container">
 
-                <!-- ログイン通知 -->
-                <div th:if="${param.loggedIn}" class="alert alert-info">
-                    ログインしました。
-                </div>
-
                 <!-- ログアウト通知 -->
                 <div th:if="${param.loggedOut}" class="alert alert-info">
                     ログアウトしました。
+                </div>
+
+                <!-- 会員登録完了通知 -->
+                <div th:if="${successMessage}" class="alert alert-info">
+                    <span th:text="${successMessage}"></span>
+                </div>
+
+                <!-- ログイン通知 -->
+                <div th:if="${param.loggedIn}" class="alert alert-info">
+                    ログインしました。
                 </div>
 
             </div>
