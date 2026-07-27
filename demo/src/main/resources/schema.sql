@@ -33,3 +33,12 @@ CREATE TABLE IF NOT EXISTS users (
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (role_id) REFERENCES roles (id)
 );
+
+create table if not exists verification_tokens(
+    id int not null auto_increment primary key,
+    user_id int not null unique,
+    token varchar(50) not null,
+    created_at datetime not null default current_timestamp,
+    updated_at datetime not null default current_timestamp on update current_timestamp,
+    foreign key (user_id) references users(id)
+);
