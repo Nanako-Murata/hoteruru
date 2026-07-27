@@ -4,24 +4,24 @@
 html {
     font-size: 14px;
 }
- 
+
 body {
     font-family: 'Noto Sans JP', sans-serif;
 }
- 
+
 h1 {
     font-size: 1.5rem;
 }
- 
+
 a {
     color: #5196a6;
     text-decoration: none !important;
 }
- 
+
 a:hover {
     color: #407784;
 }
- 
+
 /* =========================
    Layout
 ========================= */
@@ -31,21 +31,21 @@ a:hover {
     padding-bottom: 60px;
     box-sizing: border-box;
 }
- 
+
 .moattravel-navbar {
     min-height: 60px;
 }
- 
+
 .moattravel-container {
     /* PC幅で中央に広げる */
 }
- 
+
 @media screen and (min-width: 1400px) {
     .moattravel-container {
         max-width: 1200px;
     }
 }
- 
+
 /* =========================
    Footer
 ========================= */
@@ -56,7 +56,7 @@ footer {
     bottom: 0;
     background-color: #f2f0eb;
 }
- 
+
 /* =========================
    Buttons
 ========================= */
@@ -64,55 +64,61 @@ footer {
     background-color: #5196a6 !important;
     transition: 0.1s;
 }
- 
+
 .moattravel-btn:hover {
     opacity: 0.8;
 }
- 
+
 .moattravel-btn-danger {
     background-color: #f2594b !important;
     transition: 0.1s;
 }
- 
+
 .moattravel-btn-danger:hover {
     opacity: 0.8;
 }
- 
+
 /* =========================
    Links
 ========================= */
 .moattravel-link-danger {
     color: #f2594b;
 }
- 
+
 .moattravel-link-danger:hover {
     color: #a63c3c;
 }
- 
+
+/* =========================
+   Dropdown
+========================= */
+.moattravel-dropdown-item:active {
+    background-color: #5196a6;
+}
+
 /* =========================
    Pagination
 ========================= */
 .moattravel-page-link {
     color: #5196a6;
 }
- 
+
 .moattravel-page-link:hover {
     color: #407784;
 }
- 
+
 .moattravel-active {
     background-color: #5196a6 !important;
     border-color: #5196a6 !important;
 }
- 
+
 /* =========================
    Text
 ========================= */
 .moattravel-pre-wrap {
-    /* 改行文字で行を折り返す */
-    white-space: pre-wrap;
+    white-space: pre-wrap; /* 改行文字で折り返す */
 }
- 
+
 /* =========================
    Logo
 ========================= */
