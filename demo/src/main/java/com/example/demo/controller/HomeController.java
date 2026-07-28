@@ -1,14 +1,26 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.example.demo.entity.House;
+
+import com.example.demo.repository.HouseRepository;
 
 @Controller
 public class HomeController {
+    private final HouseRepository houseRepository;
 
-    @GetMapping("/")
-    public String index() {
-        return "index.html";
+    public HomeController(HouseRepository houseRepository) {
+        this.houseRepository = houseRepository;
     }
 
+    @GetMapping("/")
+    public String index(Model model) {
+        List<House> newHouses = houseRepository.findTop10ByOrderByCreatedAtDesc();
+        model.addAttribute("newHouses", newHouses);
+        return "index";
+    }
 }

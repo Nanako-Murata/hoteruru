@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +24,17 @@ public class HouseController {
 
     @GetMapping
     public String index(@RequestParam(required = false) String keyword, @RequestParam(required = false) String area,
-            @RequestParam(required = false) Integer price,
-            @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable,
+            @RequestParam(required = false) Integer price, @RequestParam(required = false) String order,
+            @RequestParam(required = false, defaultValue = "0") Integer page,
             Model model) {
+        // 並び替え条件を組み立てる
+        // priceASCなら価格の安い順で、それ以外なら新着順で並べ替える
+        Sort sort = "priceAsc".equals(order)
+                ? Sort.by(Sort.Direction.ASC, "price")
+                : Sort.by(Sort.Direction.DESC, "createdAt");
+
+        Pageable pageable = PageRequest.of(page, 10, sort);
+
         Page<House> housePage;
         if (keyword != null && !keyword.isEmpty()) {
             housePage = houseRepository.findByNameContainingOrAddressContaining(keyword, keyword, pageable);
