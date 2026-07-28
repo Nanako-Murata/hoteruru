@@ -22,7 +22,7 @@ public class SignupEventListener {
     }
 
     @EventListener
-    private void onSignupEvent(SignupEvent signupEvent) {
+    public void onSignupEvent(SignupEvent signupEvent) {
         User user = signupEvent.getUser();
         String token = UUID.randomUUID().toString();
 

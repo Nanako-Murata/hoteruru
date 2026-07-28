@@ -7,6 +7,7 @@ import org.springframework.validation.BindingResult;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.form.SignupForm;
+import com.example.demo.form.UserEditForm;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -67,6 +68,41 @@ public class UserService {
     // パスワードと確認用パスワードが一致するか確認するmethod
     public boolean isSamePassword(String password, String passwordConfirmation) {
         return password.equals(passwordConfirmation);
+    }
+
+    // メール認証後にenabledをfalseからtrueに変更する
+    @Transactional
+    public void enableUser(User user) {
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    // idでユーザーを1件取得する
+    public User findUserById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
+    }
+
+    // ユーザー情報を編集する
+    public void update(UserEditForm userEditForm) {
+        User user = userRepository.findById(userEditForm.getId())
+                .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
+
+        user.setName(userEditForm.getName());
+        user.setFurigana(userEditForm.getFurigana());
+        user.setPostalCode(userEditForm.getPostalCode());
+        user.setAddress(userEditForm.getAddress());
+        user.setPhoneNumber(userEditForm.getPhoneNumber());
+        user.setEmail(userEditForm.getEmail());
+
+        userRepository.save(user);
+    }
+
+    // メールアドレスが変更されたかを確認する
+    public boolean isEmailChanged(UserEditForm userEditForm) {
+        User currentUser = userRepository.findById(userEditForm.getId())
+                .orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
+        return !userEditForm.getEmail().equals(currentUser.getEmail());
+
     }
 
 }

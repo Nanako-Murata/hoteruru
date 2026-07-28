@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.service.UserService;
+import com.example.demo.service.VerificationTokenService;
 
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -14,20 +14,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.example.demo.entity.User;
+import com.example.demo.entity.VerificationToken;
 import com.example.demo.event.SignupEventPublisher;
 import com.example.demo.form.SignupForm;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
     private final UserService userService;
     private final SignupEventPublisher signupEventPublisher;
+    private final VerificationTokenService verificationTokenService;
 
-    AuthController(UserService userService, SignupEventPublisher signupEventPublisher) {
+    AuthController(UserService userService, SignupEventPublisher signupEventPublisher,
+            VerificationTokenService verificationTokenService) {
         this.userService = userService;
         this.signupEventPublisher = signupEventPublisher;
+        this.verificationTokenService = verificationTokenService;
     }
 
     @GetMapping("/login")
@@ -69,4 +74,22 @@ public class AuthController {
         return "redirect:/";
 
     }
+
+    // メール認証成功を受けてuserをenable(true)にするmethod
+    @GetMapping("/signup/verify")
+    public String verify(@RequestParam String token, Model model) {
+        VerificationToken verificationToken = verificationTokenService.getVerificationToken(token);
+
+        if (verificationToken != null) {
+            User user = verificationToken.getUser();
+            userService.enableUser(user);
+            String successMessage = "会員登録が完了しました";
+            model.addAttribute("successMessage", successMessage);
+        } else {
+            String errorMessage = "トークンが無効です";
+            model.addAttribute("errorMessage", errorMessage);
+        }
+        return "auth/verify";
+    }
+
 }
