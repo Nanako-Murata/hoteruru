@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.demo.entity.House;
 import com.example.demo.form.HouseEditForm;
 import com.example.demo.form.HouseRegisterForm;
+import com.example.demo.form.ReservationInputForm;
 import com.example.demo.repository.HouseRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -58,6 +59,7 @@ public class AdminHouseController {
         House house = houseRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "民泊が見つかりません"));
         model.addAttribute("house", house);
+        model.addAttribute("reservationInputForm", new ReservationInputForm());
 
         return "admin/houses/show";
     }

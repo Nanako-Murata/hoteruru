@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.entity.House;
 import com.example.demo.repository.HouseRepository;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -22,6 +23,7 @@ public class HouseController {
         this.houseRepository = houseRepository;
     }
 
+    // 民泊一覧
     @GetMapping
     public String index(@RequestParam(required = false) String keyword, @RequestParam(required = false) String area,
             @RequestParam(required = false) Integer price, @RequestParam(required = false) String order,
@@ -55,5 +57,14 @@ public class HouseController {
 
         return "houses/index";
 
+    }
+
+    // 民泊詳細画面
+    @GetMapping("/{id}")
+    public String show(@PathVariable(name = "id") Integer id, Model model) {
+        House house = houseRepository.findById(id).orElseThrow(() -> new RuntimeException("民泊が見つかりません"));
+
+        model.addAttribute("house", house);
+        return "houses/show";
     }
 }

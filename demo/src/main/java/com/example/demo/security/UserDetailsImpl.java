@@ -54,16 +54,16 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    //ユーザーのパスワードが期限切れでなければtrueを返す
+    // ユーザーのパスワードが期限切れでなければtrueを返す
     @Override
-    public boolean isCredentialsNonExpired(){
+    public boolean isCredentialsNonExpired() {
         return true;
 
     }
 
-    //ユーザーが有効であればtrueを返す
+    // ユーザーが有効であればtrueを返す
     @Override
-    public boolean isEnabled(){
+    public boolean isEnabled() {
         return user.getEnabled();
     }
 }

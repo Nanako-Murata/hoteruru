@@ -1,4 +1,3 @@
-\
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
@@ -29,7 +28,7 @@
                             <input type="hidden" name="order" th:value="${order}">
                             <div class="input-group">
                                 <input type="text" class="form-control" name="keyword" th:value="${keyword}"
-                                    placeholder="民宿名・目的地">
+                                       placeholder="民宿名・目的地">
                                 <button type="submit" class="btn text-white shadow-sm moattravel-btn">検索</button>
                             </div>
                         </form>
@@ -120,7 +119,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit"
-                                            class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
+                                                class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
                                     </div>
                                 </form>
                             </div>
@@ -146,7 +145,7 @@
                                     </div>
                                     <div class="form-group">
                                         <button type="submit"
-                                            class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
+                                                class="btn text-white shadow-sm w-100 moattravel-btn">検索</button>
                                     </div>
                                 </form>
                             </div>
@@ -156,10 +155,10 @@
                     <div class="col">
                         <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
                             <p th:if="${housePage.getTotalPages() > 1}" class="fs-5 mb-0"
-                                th:text="${'検索結果：' + housePage.getTotalElements() + '件' + '（' + (housePage.getNumber() + 1) + ' / ' + housePage.getTotalPages() + ' ページ）'}">
+                               th:text="${'検索結果：' + housePage.getTotalElements() + '件' + '（' + (housePage.getNumber() + 1) + ' / ' + housePage.getTotalPages() + ' ページ）'}">
                             </p>
                             <p th:unless="${housePage.getTotalPages() > 1}" class="fs-5 mb-0"
-                                th:text="${'検索結果：' + housePage.getTotalElements() + '件'}"></p>
+                               th:text="${'検索結果：' + housePage.getTotalElements() + '件'}"></p>
 
                             <!-- 並び替え -->
                             <form method="get" th:action="@{/houses}" class="d-flex align-items-center">
@@ -168,9 +167,9 @@
                                 <input type="hidden" name="price" th:value="${price}">
                                 <label for="order" class="me-2 mb-0">並び替え：</label>
                                 <select id="order" class="form-control form-select" name="order"
-                                    onchange="this.form.submit()">
+                                        onchange="this.form.submit()">
                                     <option value="createdAtDesc"
-                                        th:selected="${order == null || order == 'createdAtDesc'}">
+                                            th:selected="${order == null || order == 'createdAtDesc'}">
                                         新着順
                                     </option>
                                     <option value="priceAsc" th:selected="${order == 'priceAsc'}">
@@ -181,38 +180,38 @@
                         </div>
 
                         <div class="mb-3" th:each="house : ${housePage}">
-                            <a th:href="@{/houses/__${house.getId()}__}" class="link-dark moattravel-card-link">
+                            <a th:href="@{/houses/{id}(id=${house.id})}" class="link-dark moattravel-card-link">
                                 <div class="card">
                                     <div class="row g-0">
                                         <div class="col-md-4">
-
-                                            <img th:if="${house.getImageName()}"
-                                                th:src="@{/storage/__${house.getImageName()}__}"
-                                                class="card-img-top moattravel-horizontal-card-image" alt="店舗画像"
-                                                loading="lazy">
-                                            <img th:unless="${house.getImageName()}" th:src="@{/images/noImage.png}"
-                                                class="card-img-top moattravel-horizontal-card-image" alt="NO IMAGE"
-                                                loading="lazy">
+                                            <img th:if="${house.imageName}"
+                                                 th:src="@{/storage/{img}(img=${house.imageName})}"
+                                                 class="card-img-top moattravel-horizontal-card-image"
+                                                 alt="店舗画像" loading="lazy">
+                                            <img th:unless="${house.imageName}"
+                                                 th:src="@{/images/noImage.png}"
+                                                 class="card-img-top moattravel-horizontal-card-image"
+                                                 alt="NO IMAGE" loading="lazy">
                                         </div>
                                         <div class="col-md-8">
                                             <div class="card-body">
-                                                <h3 class="card-title mb-3" th:text="${house.getName()}"></h3>
+                                                <h3 class="card-title mb-3" th:text="${house.name}"></h3>
 
                                                 <hr class="mb-3">
 
                                                 <p class="card-text mb-2">
-                                                    <span th:text="${house.getDescription()}"></span>
+                                                    <span th:text="${house.description}"></span>
                                                 </p>
 
                                                 <p class="card-text mb-2">
                                                     <small class="text-muted"
-                                                        th:text="${'〒' + house.getPostalCode()}"></small>
-                                                    <small class="text-muted" th:text="${house.getAddress()}"></small>
+                                                           th:text="${'〒' + house.postalCode}"></small>
+                                                    <small class="text-muted"
+                                                           th:text="${house.address}"></small>
                                                 </p>
 
                                                 <p class="card-text">
-                                                    <span
-                                                        th:text="${#numbers.formatInteger(house.getPrice(), 1, 'COMMA') + '円 / 泊'}"></span>
+                                                    <span th:text="${#numbers.formatInteger(house.price, 1, 'COMMA') + '円 / 泊'}"></span>
                                                 </p>
                                             </div>
                                         </div>
@@ -228,22 +227,24 @@
                                     <li class="page-item">
                                         <span th:if="${housePage.isFirst()}" class="page-link disabled">前</span>
                                         <a th:unless="${housePage.isFirst()}"
-                                            th:href="@{/houses(page = ${housePage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
-                                            class="page-link moattravel-page-link">前</a>
+                                           th:href="@{/houses(page = ${housePage.getNumber() - 1}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
+                                           class="page-link moattravel-page-link">前</a>
                                     </li>
                                     <li th:each="i : ${#numbers.sequence(0, housePage.getTotalPages() - 1)}"
                                         class="page-item">
                                         <span th:if="${i == housePage.getNumber()}"
-                                            class="page-link active moattravel-active" th:text="${i + 1}"></span>
+                                              class="page-link active moattravel-active"
+                                              th:text="${i + 1}"></span>
                                         <a th:unless="${i == housePage.getNumber()}"
-                                            th:href="@{/houses(page = ${i}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
-                                            class="page-link moattravel-page-link" th:text="${i + 1}"></a>
+                                           th:href="@{/houses(page = ${i}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
+                                           class="page-link moattravel-page-link"
+                                           th:text="${i + 1}"></a>
                                     </li>
                                     <li class="page-item">
                                         <span th:if="${housePage.isLast()}" class="page-link disabled">次</span>
                                         <a th:unless="${housePage.isLast()}"
-                                            th:href="@{/houses(page = ${housePage.getNumber() + 1}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
-                                            class="page-link moattravel-page-link">次</a>
+                                           th:href="@{/houses(page = ${housePage.getNumber() + 1}, keyword = ${keyword}, area = ${area}, price = ${price}, order = ${order})}"
+                                           class="page-link moattravel-page-link">次</a>
                                     </li>
                                 </ul>
                             </nav>

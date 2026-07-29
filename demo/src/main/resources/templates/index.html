@@ -2,19 +2,21 @@
 <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <div th:replace="~{fragment :: meta}"></div>
-    <div th:replace="~{fragment :: styles}"></div>
+    <th:block th:replace="~{fragment :: meta}"></th:block>
+    <th:block th:replace="~{fragment :: styles}"></th:block>
 
     <title>moat Travel</title>
 </head>
 
 <body>
     <div class="moattravel-wrapper">
+
         <!-- ヘッダー -->
         <div th:replace="~{fragment :: header}"></div>
 
         <main>
             <div class="container pt-4 pb-5 moattravel-container">
+
                 <div th:if="${param.loggedIn}" class="alert alert-info">
                     ログインしました。
                 </div>
@@ -31,37 +33,45 @@
                     <form method="get" th:action="@{/houses}" class="mb-5 moattravel-search-form">
                         <div class="input-group">
                             <input type="text" class="form-control" name="keyword" th:value="${keyword}"
-                                placeholder="民宿名・目的地">
+                                   placeholder="民宿名・目的地">
                             <button type="submit" class="btn text-white shadow-sm moattravel-btn">検索</button>
                         </div>
                     </form>
                 </div>
 
                 <h2 class="text-center mb-3">新着</h2>
+
                 <div class="row row-cols-lg-5 row-cols-2 g-3 mb-5">
                     <div class="col" th:each="newHouse : ${newHouses}">
-                        <a th:href="@{/houses/__${newHouse.getId()}__}" class="link-dark moattravel-card-link">
+                        <a th:href="@{/houses/{id}(id=${newHouse.id})}" class="link-dark moattravel-card-link">
+
                             <div class="card h-100">
-                                <img th:if="${newHouse.getImageName()}"
-                                    th:src="@{/storage/__${newHouse.getImageName()}__}"
-                                    class="card-img-top moattravel-vertical-card-image" alt="店舗画像">
-                                <img th:unless="${newHouse.getImageName()}" th:src="@{/images/noImage.png}"
-                                    class="card-img-top moattravel-vertical-card-image" alt="NO IMAGE">
+                                <img th:if="${newHouse.imageName}"
+                                     th:src="@{/storage/{img}(img=${newHouse.imageName})}"
+                                     class="card-img-top moattravel-vertical-card-image" alt="店舗画像">
+
+                                <img th:unless="${newHouse.imageName}"
+                                     th:src="@{/images/noImage.png}"
+                                     class="card-img-top moattravel-vertical-card-image" alt="NO IMAGE">
+
                                 <div class="card-body">
-                                    <h3 class="card-title" th:text="${newHouse.getName()}"></h3>
+                                    <h3 class="card-title" th:text="${newHouse.name}"></h3>
+
                                     <p class="card-text mb-1">
-                                        <small class="text-muted" th:text="${newHouse.getAddress()}"></small>
+                                        <small class="text-muted" th:text="${newHouse.address}"></small>
                                     </p>
+
                                     <p class="card-text">
-                                        <span
-                                            th:text="${#numbers.formatInteger(newHouse.getPrice(), 1, 'COMMA') + '円 / 泊'}"></span>
+                                        <span th:text="${#numbers.formatInteger(newHouse.price, 1, 'COMMA') + '円 / 泊'}"></span>
                                     </p>
                                 </div>
                             </div>
+
                         </a>
                     </div>
                 </div>
 
+                <!-- エリアから探す -->
                 <div class="row justify-content-center">
                     <div class="col-xl-5 col-lg-6 col-md-8">
                         <h2 class="text-center mb-3">エリアから探す</h2>
@@ -177,8 +187,10 @@
                                 </tr>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
+
             </div>
         </main>
 
@@ -186,7 +198,7 @@
         <div th:replace="~{fragment :: footer}"></div>
     </div>
 
-    <div th:replace="~{fragment :: scripts}"></div>
+    <th:block th:replace="~{fragment :: scripts}"></th:block>
 </body>
 
 </html>

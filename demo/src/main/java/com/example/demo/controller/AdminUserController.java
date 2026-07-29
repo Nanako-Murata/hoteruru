@@ -43,6 +43,7 @@ public class AdminUserController {
 
     }
 
+    //管理者専用の会員詳細ページ
     @GetMapping("/{id}")
     public String show(@PathVariable Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("ユーザーが見つかりません"));
